@@ -21,90 +21,91 @@ services:
     tty: true
     volumes:
       - .:/app:cached
-      - rails_cache:/app/tmp/cache
+      # - rails_cache:/app/tmp/cache
       - bundle:/usr/local/bundle
       - node_modules:/app/node_modules
       - packs:/app/public/packs
       - .dockerdev/.psqlrc:/root/.psqlrc:ro
     environment:
       - NODE_ENV=development
-      - RAILS_ENV=${RAILS_ENV:-development}
-      - REDIS_URL=redis://redis:6379/
+      # - RAILS_ENV=${RAILS_ENV:-development}
+      # - REDIS_URL=redis://redis:6379/
       - BOOTSNAP_CACHE_DIR=/usr/local/bundle/_bootsnap
-      - WEBPACKER_DEV_SERVER_HOST=webpacker
+      # - WEBPACKER_DEV_SERVER_HOST=webpacker
       - WEB_CONCURRENCY=1
       - HISTFILE=/app/log/.bash_history
       - PSQL_HISTFILE=/app/log/.psql_history
       - EDITOR=nano
+      - PASSWORD
+      - SERVERS
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - POSTGRES_HOST
       - DATABASE_URL
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    #   redis:
+    #     condition: service_healthy
 
   runner:
     <<: *backend
     command: /bin/bash
     ports:
-      - '3000:3000'
-      - '3002:3002'
+      - ${EXPOSED_PORT:-3030}:${EXPOSED_PORT:-3030}
 
-  rails:
+  smashing:
     <<: *backend
-    command: bundle exec rails server -b 0.0.0.0
+    command: smashing start
     ports:
-      - '3000:3000'
+      - ${EXPOSED_PORT:-3030}:${EXPOSED_PORT:-3030}
 
-  sidekiq:
-    <<: *backend
-    command: bundle exec sidekiq -C config/sidekiq.yml
+  # sidekiq:
+  #   <<: *backend
+  #   command: bundle exec sidekiq -C config/sidekiq.yml
 
-  postgres:
-    image: postgres:11.1
-    volumes:
-      - .psqlrc:/root/.psqlrc:ro
-      - postgres:/var/lib/postgresql/data
-      - ./log:/root/log:cached
-    environment:
-      - PSQL_HISTFILE=/root/log/.psql_history
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-    ports:
-      - 5432
-    healthcheck:
-      test: pg_isready -U postgres -h 127.0.0.1
-      interval: 5s
+  # postgres:
+  #   image: postgres:11.1
+  #   volumes:
+  #     - .psqlrc:/root/.psqlrc:ro
+  #     - postgres:/var/lib/postgresql/data
+  #     - ./log:/root/log:cached
+  #   environment:
+  #     - PSQL_HISTFILE=/root/log/.psql_history
+  #     - POSTGRES_USER
+  #     - POSTGRES_PASSWORD
+  #   ports:
+  #     - 5432
+  #   healthcheck:
+  #     test: pg_isready -U postgres -h 127.0.0.1
+  #     interval: 5s
 
-  redis:
-    image: redis:3.2-alpine
-    volumes:
-      - redis:/data
-    ports:
-      - 6379
-    healthcheck:
-      test: redis-cli ping
-      interval: 1s
-      timeout: 3s
-      retries: 30
+  # redis:
+  #   image: redis:3.2-alpine
+  #   volumes:
+  #     - redis:/data
+  #   ports:
+  #     - 6379
+  #   healthcheck:
+  #     test: redis-cli ping
+  #     interval: 1s
+  #     timeout: 3s
+  #     retries: 30
 
-  webpacker:
-    <<: *app
-    command: ./bin/webpack-dev-server
-    ports:
-      - '3035:3035'
-    volumes:
-      - .:/app:cached
-      - bundle:/usr/local/bundle
-      - node_modules:/app/node_modules
-      - packs:/app/public/packs
-    environment:
-      - NODE_ENV=${NODE_ENV:-development}
-      - RAILS_ENV=${RAILS_ENV:-development}
-      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+  # webpacker:
+  #   <<: *app
+  #   command: ./bin/webpack-dev-server
+  #   ports:
+  #     - '3035:3035'
+  #   volumes:
+  #     - .:/app:cached
+  #     - bundle:/usr/local/bundle
+  #     - node_modules:/app/node_modules
+  #     - packs:/app/public/packs
+  #   environment:
+  #     - NODE_ENV=${NODE_ENV:-development}
+  #     - RAILS_ENV=${RAILS_ENV:-development}
+  #     - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
 
 volumes:
   postgres:

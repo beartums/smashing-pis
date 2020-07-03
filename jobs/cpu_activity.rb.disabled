@@ -1,0 +1,22 @@
+require 'net/ssh'
+require 'json'
+# :first_in sets how long it takes before the job is first run. In this case, it is run immediately
+SCHEDULER.every '20s', :first_in => 0 do |job|
+  Constants::SERVERS.each do |server|
+    Net::SSH.start(server['ip'], server['user_id'], :password => server['password']) do |ssh|
+      # 13TH column is current cpu idle pct.  Col 3 is cpu being reported on: all, 0, 1, 2, 3
+      # OR column 12 and 2 on newer versions of mpstat
+      pct_idle = ssh.exec!("mpstat -P ALL| awk '{ if ($2==\"all\" || $3==\"all\") {print $NF}}'").to_f
+      begin
+        # When mpstat has json output, use this format
+        # values = JSON.parse(response)
+        # pct_idle = values["sysstat"]['hosts'][0]['statistics'][0]['cpu-load'][0]['idle']
+        pct_active = (100 - pct_idle).round(0)
+      rescue JSON::ParserError, NoMethodError
+        pct_active = "N/A"
+      ensure
+        send_event("#{server['name']}_cpu", { value: pct_active })
+      end
+    end
+  end
+end

@@ -137,3 +137,65 @@ exit
 require 'net/ssh'
 irb
 exit
+cat Gemfile
+exit
+rails
+smashing
+ls
+cat Gemfile
+gem rails
+gem install rails
+bundle install
+smashing start
+irb
+smashing start
+lll
+exit
+smashing start
+smashing start'
+exit
+exit
+!!!
+!!!\
+exit
+smashing start
+smashing start
+smashing start
+smashing startprintenv
+exit
+printenv
+smashing start
+smashing start
+exit
+smashing start
+smashing start
+exit
+rails c
+irb
+irb
+irb
+irb
+irb
+irb
+smashing start
+smashing start
+smashing start
+exit
+smashing start
+smashing start
+smashing start
+exit
+smashing start
+smashing start
+smashing start
+smashing start
+smashing start
+exit
+date
+ls /etc/localtime
+cat /etc/localtime
+exit
+date
+smashing start
+smashing start
+exit

@@ -1,0 +1,53 @@
+
+.widget-thermometer {
+  background-color: plum;
+  height: 250px;
+  --good-color: green;
+  --warning-color: goldenrod;
+  --critical-color: crimson;
+  --therm-height: 150px;
+  --border-size: 3px;
+  --therm-width: 20px;
+  --temp-percent: 20%;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  justify-content: space-evenly;
+}
+.therm {
+    position: relative;
+    border: var(--border-size) solid darkgrey;
+    top: 0px;
+    left: 50px;
+    width: var(--therm-width);
+    height: var(--therm-height);
+    background-color: lightgrey;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+.temp {
+    background-color: crimson;
+    position: relative;
+    bottom: calc(var(--temp-percent) - var(--therm-height) );
+    width: 100%;
+    height: var(--temp-percent);
+  }
+.therm-container {
+  display: flex;
+  flex: 2 0 auto;
+  margin-bottom: 10px;
+  .value-cell {
+    flex: 1 1 70%;
+    position: relative;
+    top: 20px;
+    .value {
+      font-size: 40px;
+    }
+  }
+  .therm-cell {
+    flex: 1 1 30%
+  }
+}
+

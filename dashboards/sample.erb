@@ -2,25 +2,50 @@
   <div class="gridster">
   <ul>
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div data-id="external_ips" data-view="List" data-align="center" data-unordered="true" data-title="Public IPs" data-moreinfo="External IP addresses"></div>
+      <div data-id="external_ips" data-view="List" data-align="center" 
+        data-unordered="true" data-title="Public IPs" data-moreinfo="External IP addresses">
+      </div>
     </li>
     
     <% Constants::SERVERS.each do |server| %>
       <li data-row="1" data-col="3" data-sizex="1" data-sizey="1">
-        <div data-id="<%= server['name'] %>_temp" data-view="Meter" data-title="<%= server['name'] %>" data-height="200" data-width="200" data-min="0" data-max="100" data-warning="60" data-critical="70" data-suffix="°"></div>
+        <div data-id="<%= server['name'] %>_temp" data-view="Meter" data-title="<%= server['name'] %>" 
+          data-height="200" data-width="200" data-min="0" data-max="100" data-warning="60" data-critical="70" data-suffix="°">
+        </div>
       </li>
     <% end %>     
 
     <li data-row="3" data-col="1" data-sizex="2" data-sizey="1">
-      <div data-id="my-text" data-view="Text" data-text="Just Some Text" data-title="filler" data-moreinfo="nothing, really"></div>
+      <div data-id="my-text" data-view="Text" data-text="Just Some Text" 
+        data-title="filler" data-moreinfo="nothing, really">
+      </div>
     </li>
 
     <% Constants::SERVERS.each do |server| %>
       <li data-row="3" data-col="3" data-sizex="1" data-sizey="1">
-        <div data-id="<%= server['name'] %>_cpu" data-view="Meter" data-title="<%= server['name'] %>" data-height="200" data-width="200" data-min="0" data-max="100" data-warning="50" data-critical="75" data-suffix="%"></div>
+        <div data-id="<%= server['name'] %>_cpu" data-view="Meter" 
+          data-title="<%= server['name'] %>" 
+          data-min="0" data-max="100" 
+          data-warning="50" data-critical="75" 
+          data-suffix="%">
+        </div>
       </li>
     <% end %>     
 
+    <li data-row="5" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="therm_test" data-view="Thermometer" 
+        data-title="test" data-height="165" data-width="50%"
+        data-max="100" data-min="50"
+        data-critical-threshold="75"
+        data-warning-threshold="65"
+        data-moreinfo="this is more info">
+      </div>
+    </li>
+
   </ul>
-  <center><div style="font-size: 12px">Try this: curl -d '{ "auth_token": "YOUR_AUTH_TOKEN", "text": "Hey, Look what I can do!" }' \http://<%=request.host%>:<%=request.port%>/widgets/welcome</div></center>
+  <center>
+    <div style="font-size: 12px">
+      Try this: curl -d '{ "auth_token": "YOUR_AUTH_TOKEN", "text": "Hey, Look what I can do!" }' \http://<%=request.host%>:<%=request.port%>/widgets/welcome
+    </div>
+  </center>
 </div>

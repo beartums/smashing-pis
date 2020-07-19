@@ -11,7 +11,7 @@ services:
         NODE_MAJOR: '12'
         YARN_VERSION: '1.22.4'
         BUNDLER_VERSION: '2.1.4'
-    image: example-dev:1.0.0
+    image: smashing_pis-dev:0.1.0
     tmpfs:
       - /tmp
 
